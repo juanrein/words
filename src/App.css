@@ -1,38 +1,68 @@
-.App {
-  text-align: center;
+.kanji {
+    font-size: 40px; 
+    border: 1px solid black;
+    padding: 1em;
+    background-color: aliceblue;
+    margin-top: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.wordNumber {
+    padding: 0em 1em;    
+    margin: 0em 0.5em;    
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.help {
+    padding: 0em 1em;
+    margin: 0em;
+    min-width: 200px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.helpButton {
+    padding: 0.5em 0.5em;
+    margin: 0m 1em;
+    background-color: rgb(197, 190, 190);
+    font-weight: bold;
 }
 
-.App-link {
-  color: #61dafb;
+.kanjiContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: top;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
+
+input[type="text"] {
+    width: 100%;
+    padding: 1em 1em;
+    margin: 1em 1em;
+    box-sizing: border-box;
+    background-color: aliceblue;
+}
+
+input[type="submit"] {
+    padding: 1em 1em;
+    margin: 1em 1em;
+    background-color: rgb(197, 190, 190);
+    font-weight: bold;
+}
+
+.error {
+    animation-duration: 0.5s;
+    animation-name: mistake;
+}
+
+@keyframes mistake {
+    0% {background-color: red;}
+    25% {transform: rotate(5deg);}
+    50% {transform: rotate(-5deg);}
+    75% {transform: rotate(5deg);}
+    100% {transform: rotate(-5deg);}
+}
+
