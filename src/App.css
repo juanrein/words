@@ -1,9 +1,17 @@
+
 .kanji {
     font-size: 40px; 
     border: 1px solid black;
     padding: 1em;
     background-color: aliceblue;
     margin-top: 0;
+}
+
+.kanjiLeft {
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: center;
 }
 
 .wordNumber {
@@ -66,3 +74,7 @@ input[type="submit"] {
     100% {transform: rotate(-5deg);}
 }
 
+select {
+    padding: 0.5em;
+    margin-left: 1em;
+}

@@ -1,54 +1,16 @@
 import React from 'react';
 import './App.css';
 
-class Word {
-    constructor(meanings, kanji, kana, romaji) {
-        this.meanings = meanings;
-        this.kanji = kanji;
-        this.kana = kana;
-        this.romaji = romaji;
-    }
-}
 
-const WORDS = [
-    new Word(["one", "1"], "一", "いち", "ichi"),
-    new Word(["two", "2"], "二", "に", "ni"),
-    new Word(["three", "3"], "三", "さん", "san"),
-    new Word(["four", "4"], "四", "よん", "yon"),
-    new Word(["five", "5"], "五", "ご", "go"),
-    new Word(["six", "6"], "六", "ろく", "roku"),
-    new Word(["seven", "7"], "七", "なな", "nana"),
-    new Word(["eight", "8"], "八", "はち", "hachi"),
-    new Word(["nine", "9"], "九", "きゅう", "kyuu"),
-    new Word(["ten", "10"], "十", "じゅう", "jyuu"),
-    new Word(["hundred", "100"], "百", "ひゃく", "hyaku"),
-    new Word(["thousand", "1000"], "千", "せん", "sen"),
-    new Word(["ten thousand", "10000"], "万", "まん", "man"),
-    new Word(["person"], "人", "ひと", "hito"),
-    new Word(["eye"], "目", "め", "me"),
-    new Word(["mouth"], "口", "くち", "kuchi"),
-    new Word(["ear"], "耳", "みみ", "mimi"),
-    new Word(["hand"], "手", "て", "te"),
-    new Word(["foot"], "足", "あし", "ashi"),
-    new Word(["power"], "力", "ちから", "chikara"),
-    new Word(["school"], "学校", "がっこう", "gakkou"),
-    new Word(["company"], "会社", "かいしゃ", "kaisha"),
-    new Word(["station"], "駅", "えき", "eki"),
-    new Word(["shop"], "店", "みせ", "mise"),
-    new Word(["airport"], "空港", "くうこう", "kuukou"),
-    new Word(["university"], "大学", "だいがく", "daigaku"),
-    new Word(["entrance"], "入口", "いりぐち", "iriguchi"),
-    new Word(["exit"], "出口", "でぐち", "deguchi"),
-    new Word(["car"], "車", "くるま", "kuruma"),
-    new Word(["train"], "電車", "でんしゃ", "densha"),
-];
 
 class App extends React.Component {
     constructor(props) {
         super(props);
+        let lvl = Object.keys(this.props.words)[0];
         this.state = {
             value: "",
             selectValue: "meaning",
+            level: lvl,
             wordI: 0,
             showHelp: false,
             incorrectQuess: false
@@ -58,6 +20,7 @@ class App extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleToggleHelp = this.handleToggleHelp.bind(this);
         this.handleSelectChange = this.handleSelectChange.bind(this);
+        this.handleLevelChange = this.handleLevelChange.bind(this);
     }
 
     handleChange(event) {
@@ -72,20 +35,20 @@ class App extends React.Component {
         let isCorrect;
         switch(this.state.selectValue) {
             case "romaji":
-                isCorrect = WORDS[this.state.wordI].romaji === actual;
+                isCorrect = this.props.words[this.state.level][this.state.wordI].romaji === actual;
                 break;
             case "kana":
-                isCorrect = WORDS[this.state.wordI].kana === actual
+                isCorrect = this.props.words[this.state.level][this.state.wordI].kana === actual
                 break;
             case "meaning":
-                isCorrect = WORDS[this.state.wordI].meanings.includes(actual);
+                isCorrect = this.props.words[this.state.level][this.state.wordI].meanings.includes(actual);
                 break;
             default:
                 console.log("missing select case");
         }
         if (isCorrect) {
             this.setState(prevState => ({
-                wordI: (prevState.wordI + 1) % WORDS.length,
+                wordI: (prevState.wordI + 1) % this.props.words[this.state.level].length,
                 value: "",
                 incorrectQuess: false
             }));
@@ -104,10 +67,20 @@ class App extends React.Component {
         this.setState({selectValue: event.target.value});
     }
 
+    handleLevelChange(event) {
+        this.setState({
+            level: event.target.value,
+            wordI: 0,
+            value: "",
+            incorrectQuess: false,
+            showHelp: false
+        })
+    }
+
     render() {
         let helpBox; 
         if (this.state.showHelp) {
-            let word = WORDS[this.state.wordI];
+            let word = this.props.words[this.state.level][this.state.wordI];
             helpBox = (
                 <div className='help'>
                     <button onClick={this.handleToggleHelp} className="helpButton">
@@ -115,6 +88,7 @@ class App extends React.Component {
                     </button>
                     <p>meanings: {word.meanings.join()}</p>
                     <p>kana: {word.kana}</p>
+                    <p>romaji: {word.romaji}</p> 
                 </div>
             );
         } else {
@@ -142,10 +116,17 @@ class App extends React.Component {
         }
         return (
             <div className="container">
-                <h1>{headerText}</h1>
+                <h2>{headerText}</h2>
                 <div className='kanjiContainer'>
-                    <p className="wordNumber">{this.state.wordI+1}/{WORDS.length}</p>
-                    <p className='kanji'>{WORDS[this.state.wordI].kanji}</p>
+                    <div className='kanjiLeft'>
+                        <p className="wordNumber">{this.state.wordI+1}/{this.props.words[this.state.level].length}</p>
+                        <p>
+                            <select value={this.state.level} onChange={this.handleLevelChange}>
+                                {Object.keys(this.props.words).map(k => (<option key={k} value={k}>{k}</option>))}
+                            </select>
+                        </p>
+                    </div>
+                    <p className='kanji'>{this.props.words[this.state.level][this.state.wordI].kanji}</p>
                     {helpBox}
                 </div>
                 <form onSubmit={this.handleSubmit}>
