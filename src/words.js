@@ -5,6 +5,10 @@ class Word {
         this.kana = kana;
         this.romaji = romaji;
     }
+
+    copy() {
+        return new Word([...this.meanings], this.kanji, this.kana, this.romaji);
+    }
 }
 
 const WORDS_N5 = [
@@ -191,6 +195,36 @@ const WORDS_N4 = [
     new Word(["to go home"], "帰る", "かえる", "kaeru"),
     new Word(["to lend"], "貸す", "かす", "kasu"),
     new Word(["to commute"], "通う", "かよう", "kayou"),
+    new Word(["to borrow"], "借りる", "かりる", "kariru"),
+    new Word(["to change"], "変わる", "かわる", "kawaru"),
+    new Word(["to consider"], "考える", "かんがえる", "kangaeru"),
+    new Word(["to emphasize"], "強調する", "きょうちょうする", "kyouchousuru"),
+    new Word(["to cut"], "切る", "きる", "kiru"),
+    new Word(["to wear"], "着る", "きる", "kiru"),
+    new Word(["to research"], "研究する", "けんきゅうする", "kenkyuusuru"),
+    new Word(["to answer"], "答える", "こたえる", "kotaeru"),
+    new Word(["to ask a question"], "質問する", "しつもんする", "shitsumonsuru"),
+    new Word(["to close"], "閉める", "しめる", "shimeru"),
+    new Word(["to leave"], "出発する", "しゅっぱつする", "shuppatsusuru"),
+    new Word(["to get to know"], "知る", "しる", "shiru"),
+    new Word(["to believe"], "信じる", "しんじる", "shinjiru"),
+    new Word(["to proceed"], "進む", "すすむ", "susumu"),
+    new Word(["to live"], "住む", "すむ", "sumu"),
+    new Word(["to explain"], "説明する", "せつめいする", "setsumeisuru"),
+    new Word(["to take care"], "世話をする", "せわをする", "sewawosuru"),
+    new Word(["to build"], "建てる", "たてる", "tateru"),
+    new Word(["to pay attention"], "注意する", "ちゅういする", "chuuisuru"),
+    new Word(["to cancel"], "中止する", "ちゅうしする", "chuushisuru"),
+    new Word(["to order"], "注文する", "ちゅうもんする", "chuumonsuru"),
+    new Word(["to use"], "使う", "つかう", "tsukau"),
+    new Word(["to arrive"], "着く", "つく", "tsuku"),
+    new Word(["to make"], "作る", "つくる", "tsukuru"),
+    new Word(["to stop"], "止まる", "とまる", "tomaru"),
+    new Word(["to be in time"], "間に合う", "まにあう", "maniau"),
+    new Word(["to be hospitalised"], "入院する", "にゅういんする", "nyuuinsuru"),
+    new Word(["to learn"], "習う", "ならう", "narau"),
+    new Word(["to get on"], "乗る", "のる", "noru"),
+    new Word(["to carry"], "運ぶ", "はこぶ", "hakobu"),
 ]
 
 

@@ -7,13 +7,22 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         let lvl = Object.keys(this.props.words)[0];
+
+        let words = {};
+        for (let k in this.props.words) {
+            words[k] = []
+            for (let w of this.props.words[k]) {
+                words[k].push(w);
+            }
+        }
         this.state = {
             value: "",
             selectValue: "meaning",
             level: lvl,
             wordI: 0,
             showHelp: false,
-            incorrectQuess: false
+            incorrectQuess: false,
+            words: words
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -21,6 +30,7 @@ class App extends React.Component {
         this.handleToggleHelp = this.handleToggleHelp.bind(this);
         this.handleSelectChange = this.handleSelectChange.bind(this);
         this.handleLevelChange = this.handleLevelChange.bind(this);
+        this.handleShuffle = this.handleShuffle.bind(this);
     }
 
     handleChange(event) {
@@ -30,25 +40,29 @@ class App extends React.Component {
         });
     }
 
+    /**
+     * Checks if answer was correct and changes to next word
+     */
     handleSubmit(event) {
         let actual = this.state.value;
         let isCorrect;
+        let currentWord = this.state.words[this.state.level][this.state.wordI];
         switch(this.state.selectValue) {
             case "romaji":
-                isCorrect = this.props.words[this.state.level][this.state.wordI].romaji === actual;
+                isCorrect = currentWord.romaji.toLowerCase() === actual.toLowerCase();
                 break;
             case "kana":
-                isCorrect = this.props.words[this.state.level][this.state.wordI].kana === actual
+                isCorrect = currentWord.kana.toLowerCase() === actual.toLowerCase();
                 break;
             case "meaning":
-                isCorrect = this.props.words[this.state.level][this.state.wordI].meanings.includes(actual);
+                isCorrect = currentWord.meanings.some(w => w.toLowerCase() === actual.toLowerCase());
                 break;
             default:
                 console.log("missing select case");
         }
         if (isCorrect) {
             this.setState(prevState => ({
-                wordI: (prevState.wordI + 1) % this.props.words[this.state.level].length,
+                wordI: (prevState.wordI + 1) % this.state.words[this.state.level].length,
                 value: "",
                 incorrectQuess: false
             }));
@@ -77,10 +91,50 @@ class App extends React.Component {
         })
     }
 
+    /**
+     * Shuffles the current word set (level)
+     */
+    handleShuffle(event) {
+        let wordsLvl = [];
+        for (let word of this.state.words[this.state.level]) {
+            wordsLvl.push(word.copy())
+        }
+        let currentIndex = wordsLvl.length;
+        let randomIndex;
+        while (currentIndex > 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            let tmp = wordsLvl[currentIndex];
+            wordsLvl[currentIndex] = wordsLvl[randomIndex];
+            wordsLvl[randomIndex] = tmp;
+        }
+
+        let newWords = {};
+        for (let k in this.state.words) {
+            if (k === this.state.level) {
+                newWords[k] = wordsLvl;
+            }
+            else {
+                newWords[k] = [];
+                for (let word of this.state.words[k]) {
+                    newWords[k].push(word.copy())
+                }
+
+            }
+        }
+        this.setState({
+            words: newWords, 
+            wordI: 0, 
+            incorrectQuess: false, 
+            value: ""
+        });   
+    }
+
     render() {
         let helpBox; 
         if (this.state.showHelp) {
-            let word = this.props.words[this.state.level][this.state.wordI];
+            let word = this.state.words[this.state.level][this.state.wordI];
             helpBox = (
                 <div className='help'>
                     <button onClick={this.handleToggleHelp} className="helpButton">
@@ -119,14 +173,13 @@ class App extends React.Component {
                 <h2>{headerText}</h2>
                 <div className='kanjiContainer'>
                     <div className='kanjiLeft'>
-                        <p className="wordNumber">{this.state.wordI+1}/{this.props.words[this.state.level].length}</p>
-                        <p>
-                            <select value={this.state.level} onChange={this.handleLevelChange}>
-                                {Object.keys(this.props.words).map(k => (<option key={k} value={k}>{k}</option>))}
-                            </select>
-                        </p>
+                        <p className="wordNumber">{this.state.wordI+1}/{this.state.words[this.state.level].length}</p>
+                        <select value={this.state.level} onChange={this.handleLevelChange}>
+                            {Object.keys(this.state.words).map(k => (<option key={k} value={k}>{k}</option>))}
+                        </select>
+                        <button onClick={this.handleShuffle} className="shuffleButton">Shuffle words</button>
                     </div>
-                    <p className='kanji'>{this.props.words[this.state.level][this.state.wordI].kanji}</p>
+                    <p className='kanji'>{this.state.words[this.state.level][this.state.wordI].kanji}</p>
                     {helpBox}
                 </div>
                 <form onSubmit={this.handleSubmit}>

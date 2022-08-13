@@ -1,3 +1,14 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.kanjiContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
 
 .kanji {
     font-size: 40px; 
@@ -10,13 +21,20 @@
 .kanjiLeft {
     display: flex;
     flex-direction: column;
-    justify-content: top;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-right: 1em;
 }
 
+.kanjiLeft > * {
+    margin: 0 0 1em 0;
+}
+
+
 .wordNumber {
-    padding: 0em 1em;    
-    margin: 0em 0.5em;    
+    border: 1px solid black;
+    background-color: aliceblue;
+    padding: 0.25em;
 }
 
 .help {
@@ -32,26 +50,20 @@
     font-weight: bold;
 }
 
-.kanjiContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: top;
+.shuffleButton {
+    padding: 0.5em 0.5em;
+    margin: 0m 1em;
+    background-color: aliceblue;
+    font-weight: bold;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
 
 input[type="text"] {
-    width: 100%;
     padding: 1em 1em;
     margin: 1em 1em;
     box-sizing: border-box;
     background-color: aliceblue;
+    width: 100%;
 }
 
 input[type="submit"] {
@@ -77,4 +89,5 @@ input[type="submit"] {
 select {
     padding: 0.5em;
     margin-left: 1em;
+    display: block;
 }
