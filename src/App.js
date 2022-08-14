@@ -2,25 +2,19 @@ import React from 'react';
 import './App.css';
 
 
-
 class App extends React.Component {
     constructor(props) {
         super(props);
         let lvl = Object.keys(this.props.words)[0];
 
-        let words = {};
-        for (let k in this.props.words) {
-            words[k] = []
-            for (let w of this.props.words[k]) {
-                words[k].push(w);
-            }
-        }
+        let words = JSON.parse(JSON.stringify(this.props.words));
         this.state = {
             value: "",
             selectValue: "meaning",
             level: lvl,
             wordI: 0,
             showHelp: false,
+            autoHideHelp: true,
             incorrectQuess: false,
             words: words
         };
@@ -31,6 +25,7 @@ class App extends React.Component {
         this.handleSelectChange = this.handleSelectChange.bind(this);
         this.handleLevelChange = this.handleLevelChange.bind(this);
         this.handleShuffle = this.handleShuffle.bind(this);
+        this.handleAutohideChange = this.handleAutohideChange.bind(this);
     }
 
     handleChange(event) {
@@ -48,11 +43,10 @@ class App extends React.Component {
         let isCorrect;
         let currentWord = this.state.words[this.state.level][this.state.wordI];
         switch(this.state.selectValue) {
-            case "romaji":
-                isCorrect = currentWord.romaji.toLowerCase() === actual.toLowerCase();
-                break;
             case "kana":
-                isCorrect = currentWord.kana.toLowerCase() === actual.toLowerCase();
+                let isCorrectKun = currentWord.kun.some(w => w === actual);
+                let isCorrectOn = currentWord.on.some(w => w === actual);
+                isCorrect = isCorrectKun || isCorrectOn;
                 break;
             case "meaning":
                 isCorrect = currentWord.meanings.some(w => w.toLowerCase() === actual.toLowerCase());
@@ -64,7 +58,8 @@ class App extends React.Component {
             this.setState(prevState => ({
                 wordI: (prevState.wordI + 1) % this.state.words[this.state.level].length,
                 value: "",
-                incorrectQuess: false
+                incorrectQuess: false,
+                showHelp: !prevState.autoHideHelp
             }));
         }
         else {
@@ -95,10 +90,9 @@ class App extends React.Component {
      * Shuffles the current word set (level)
      */
     handleShuffle(event) {
-        let wordsLvl = [];
-        for (let word of this.state.words[this.state.level]) {
-            wordsLvl.push(word.copy())
-        }
+        let wordsCopy = JSON.parse(JSON.stringify(this.state.words));
+        let wordsLvl = wordsCopy[this.state.level];
+
         let currentIndex = wordsLvl.length;
         let randomIndex;
         while (currentIndex > 0) {
@@ -109,26 +103,17 @@ class App extends React.Component {
             wordsLvl[currentIndex] = wordsLvl[randomIndex];
             wordsLvl[randomIndex] = tmp;
         }
-
-        let newWords = {};
-        for (let k in this.state.words) {
-            if (k === this.state.level) {
-                newWords[k] = wordsLvl;
-            }
-            else {
-                newWords[k] = [];
-                for (let word of this.state.words[k]) {
-                    newWords[k].push(word.copy())
-                }
-
-            }
-        }
+        
         this.setState({
-            words: newWords, 
+            words: wordsCopy, 
             wordI: 0, 
             incorrectQuess: false, 
             value: ""
         });   
+    }
+
+    handleAutohideChange(event) {
+        this.setState(prevState => ({autoHideHelp: !prevState.autoHideHelp}));
     }
 
     render() {
@@ -137,17 +122,27 @@ class App extends React.Component {
             let word = this.state.words[this.state.level][this.state.wordI];
             helpBox = (
                 <div className='help'>
+                    <p>
+                        <input id="hideCheckbox" type="checkbox" onChange={this.handleAutohideChange} checked={this.state.autoHideHelp} />
+                        <label htmlFor="hideCheckbox">Hide help after correct answer</label>
+                    </p>
+
                     <button onClick={this.handleToggleHelp} className="helpButton">
                         Hide help
                     </button>
-                    <p>meanings: {word.meanings.join()}</p>
-                    <p>kana: {word.kana}</p>
-                    <p>romaji: {word.romaji}</p> 
+                    <p>meanings: {word.meanings.join(", ")}</p>
+                    <p>kun: {word.kun.join(", ")}</p>
+                    <p>on: {word.on.join(", ")}</p>
                 </div>
             );
         } else {
             helpBox = (
                 <div className='help'>
+                    <p>
+                        <input id="hideCheckbox" type="checkbox" onChange={this.handleAutohideChange} checked={this.state.autoHideHelp} />
+                        <label htmlFor="hideCheckbox">Hide help after correct answer</label>
+                    </p>
+
                     <button onClick={this.handleToggleHelp} className="helpButton">
                         Show help
                     </button>
@@ -156,9 +151,6 @@ class App extends React.Component {
         }
         let headerText = ""
         switch(this.state.selectValue) {
-            case "romaji":
-                headerText = "Type the kanji in romaji"
-                break;
             case "kana":
                 headerText = "Type the kanji in hiragana/katakana";
                 break;
@@ -184,7 +176,6 @@ class App extends React.Component {
                 </div>
                 <form onSubmit={this.handleSubmit}>
                     <select value={this.state.selectValue} onChange={this.handleSelectChange}>
-                        <option value="romaji">Romaji</option>
                         <option value="kana">Hiragana/Katakana</option>
                         <option value="meaning">Meaning</option>
                     </select>
