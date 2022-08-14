@@ -155,7 +155,7 @@ class App extends React.Component {
                 headerText = "Type the kanji in hiragana/katakana";
                 break;
             case "meaning":
-                headerText = "Type one of the meanings of this kanji";
+                headerText = "Type the meanings of this kanji in English";
                 break;
             default:
                 console.log("missing select case");
@@ -180,7 +180,7 @@ class App extends React.Component {
                         <option value="meaning">Meaning</option>
                     </select>
                     <label>
-                        <input type="text" value={this.state.value} onChange={this.handleChange} />
+                        <input type="text" placeholder="type" value={this.state.value} onChange={this.handleChange} />
                     </label>
                     <input type="submit" value="Check" className={this.state.incorrectQuess ? "error" : ""} />
                 </form>

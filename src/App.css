@@ -1,13 +1,16 @@
+h2 {
+    margin: 1em;
+}
+
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-left: 0.25em;
+    margin-right: 0.25em;
 }
 
 .kanjiContainer {
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
 }
 
 .kanji {
@@ -20,16 +23,15 @@
 
 .kanjiLeft {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     margin-right: 1em;
 }
 
 .kanjiLeft > * {
-    margin: 0 0 1em 0;
+    margin: 0 1em 1em 0;
 }
-
 
 .wordNumber {
     border: 1px solid black;
@@ -38,7 +40,7 @@
 }
 
 .help {
-    padding: 0em 1em;
+    padding: 0em 0em;
     margin: 0em;
     min-width: 200px;
 }
@@ -46,8 +48,8 @@
 
 .helpButton {
     padding: 0.5em 0.5em;
-    margin: 0m 1em;
-    background-color: rgb(197, 190, 190);
+    margin: 0em 0em 1em 0em;
+    background-color: aliceblue;
     font-weight: bold;
 }
 
@@ -70,7 +72,7 @@ input[type="text"] {
 input[type="submit"] {
     padding: 1em 1em;
     margin: 1em 1em;
-    background-color: rgb(197, 190, 190);
+    background-color: aliceblue;
     font-weight: bold;
 }
 
@@ -91,4 +93,40 @@ select {
     padding: 0.5em;
     margin-left: 1em;
     display: block;
+}
+
+@media screen and (min-width: 540px) {
+    .container {
+        margin: 1em;
+    }
+
+    .kanjiContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .kanjiLeft {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-right: 1em;
+    }
+
+    .kanjiLeft > * {
+        margin: 0 0 1em 0;
+    }
+    
+    .help {
+        padding: 0em 1em;
+    }
+
+    input[type="text"] {
+        padding: 1em 1em;
+        margin: 1em 1em;
+        box-sizing: border-box;
+        background-color: aliceblue;
+        width: 300px;
+    }
 }
