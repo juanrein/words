@@ -42,10 +42,16 @@ class App extends React.Component {
         let actual = this.state.value;
         let isCorrect;
         let currentWord = this.state.words[this.state.level][this.state.wordI];
+
+        let pattern = /[-.]/g;
+        let matchWord = w => {
+            return (w === actual) || w.replaceAll(pattern, "") === actual;
+        } 
+
         switch(this.state.selectValue) {
             case "kana":
-                let isCorrectKun = currentWord.kun.some(w => w === actual);
-                let isCorrectOn = currentWord.on.some(w => w === actual);
+                let isCorrectKun = currentWord.kun.some(matchWord);
+                let isCorrectOn = currentWord.on.some(matchWord);
                 isCorrect = isCorrectKun || isCorrectOn;
                 break;
             case "meaning":
@@ -73,7 +79,11 @@ class App extends React.Component {
     }
 
     handleSelectChange(event) {
-        this.setState({selectValue: event.target.value});
+        this.setState({
+            selectValue: event.target.value,
+            wordI: 0,
+            incorrectQuess: false
+        });
     }
 
     handleLevelChange(event) {
