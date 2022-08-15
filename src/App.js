@@ -132,10 +132,10 @@ class App extends React.Component {
             let word = this.state.words[this.state.level][this.state.wordI];
             helpBox = (
                 <div className='help'>
-                    <p>
+                    <div className='checkboxContainer'>
                         <input id="hideCheckbox" type="checkbox" onChange={this.handleAutohideChange} checked={this.state.autoHideHelp} />
                         <label htmlFor="hideCheckbox">Hide help after correct answer</label>
-                    </p>
+                    </div>
 
                     <button onClick={this.handleToggleHelp} className="helpButton">
                         Hide help
@@ -148,11 +148,6 @@ class App extends React.Component {
         } else {
             helpBox = (
                 <div className='help'>
-                    <p>
-                        <input id="hideCheckbox" type="checkbox" onChange={this.handleAutohideChange} checked={this.state.autoHideHelp} />
-                        <label htmlFor="hideCheckbox">Hide help after correct answer</label>
-                    </p>
-
                     <button onClick={this.handleToggleHelp} className="helpButton">
                         Show help
                     </button>
@@ -184,7 +179,7 @@ class App extends React.Component {
                     <p className='kanji'>{this.state.words[this.state.level][this.state.wordI].kanji}</p>
                     {helpBox}
                 </div>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} autoComplete="off">
                     <select value={this.state.selectValue} onChange={this.handleSelectChange}>
                         <option value="kana">Hiragana/Katakana</option>
                         <option value="meaning">Meaning</option>
