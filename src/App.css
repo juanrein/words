@@ -25,6 +25,7 @@ h2 {
     padding: 1em;
     background-color: aliceblue;
     margin-top: 0;
+    margin-bottom: 0;
 }
 
 .kanjiLeft {
@@ -109,6 +110,10 @@ select {
         display: flex;
         flex-direction: row;
         align-items: flex-start;
+    }
+
+    .kanji {
+        margin-bottom: 1em;
     }
 
     .kanjiLeft {
