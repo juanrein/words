@@ -86,7 +86,7 @@ form div {
     width: 100%;
 }
 
-input[type="text"] {
+input[type="search"] {
     padding: 0.5em 0.5em;
     box-sizing: border-box;
     background-color: aliceblue;
@@ -132,7 +132,7 @@ input[type="submit"] {
         width: auto;
     }
 
-    input[type="text"] {
+    input[type="search"] {
         margin-right: 0.25em;
         width: auto;
     }

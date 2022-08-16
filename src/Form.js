@@ -8,15 +8,13 @@ function Form(props) {
                 <option value="meaning">Meaning</option>
             </select>
             <div>
-                <label>
-                    <input 
-                        type="text" 
-                        placeholder="type" 
-                        value={props.value} 
-                        onChange={props.handleChange}
-                        autoComplete="off"
-                    />
-                </label>
+                <input 
+                    type="search" 
+                    placeholder="type" 
+                    value={props.value} 
+                    onChange={props.handleChange}
+                    autoComplete="off"
+                />
                 <input 
                     type="submit" 
                     value="Check" 
