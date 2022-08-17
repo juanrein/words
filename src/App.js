@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import HelpBox from './HelpBox';
 import Form from './Form';
+import {toHiragana, toKatakana} from 'wanakana';
 
 class App extends React.Component {
     constructor(props) {
@@ -48,12 +49,22 @@ class App extends React.Component {
         let matchWord = w => {
             return (w === actual) || w.replaceAll(pattern, "") === actual;
         } 
+        let matchWordRomaji = (w, a) => {
+            return (w === a) || w.replaceAll(pattern, "") === a;
+        }
 
         switch(this.state.selectValue) {
             case "kana":
                 let isCorrectKun = currentWord.kun.some(matchWord);
                 let isCorrectOn = currentWord.on.some(matchWord);
                 isCorrect = isCorrectKun || isCorrectOn;
+                break;
+            case "romaji":
+                let actualHiragana = toHiragana(actual);
+                let actualKatakana = toKatakana(actual);
+                let isCorrectKunR = currentWord.kun.some(w => matchWordRomaji(w, actualHiragana));
+                let isCorrectOnR = currentWord.on.some(w => matchWordRomaji(w, actualKatakana));
+                isCorrect = isCorrectKunR || isCorrectOnR;
                 break;
             case "meaning":
                 isCorrect = currentWord.meanings.some(w => w.toLowerCase() === actual.toLowerCase());
@@ -140,6 +151,9 @@ class App extends React.Component {
         switch(this.state.selectValue) {
             case "kana":
                 headerText = "Type the kanji in hiragana/katakana";
+                break;
+            case "romaji":
+                headerText = "Type the kanji in romaji";
                 break;
             case "meaning":
                 headerText = "Type the meanings of this kanji in English";

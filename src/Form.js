@@ -5,6 +5,7 @@ function Form(props) {
         <form onSubmit={props.handleSubmit} autoComplete="off">
             <select value={props.selectValue} onChange={props.handleSelectChange}>
                 <option value="kana">Hiragana/Katakana</option>
+                <option value="romaji">Romaji</option>
                 <option value="meaning">Meaning</option>
             </select>
             <div>
